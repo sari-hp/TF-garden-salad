@@ -540,6 +540,19 @@ a[href^="tel:"] {
   }
 }
 
+// オープニング（js/script.js の initOpening）の開始前の状態。写真は中央の点、文字とヘッダーは非表示
+.is-opening {
+  & .p-mv__image {
+    clip-path: circle(0% at 50% 50%);
+  }
+  & .p-mv__en-line,
+  & .p-mv__ja-line,
+  & .p-mv__ja-band,
+  & .l-header {
+    opacity: 0;
+  }
+}
+
 /* ========================================
   Concept
 ======================================== */

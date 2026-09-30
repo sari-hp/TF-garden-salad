@@ -1,11 +1,68 @@
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
+
 // ========================================
 // Initialize
 // ========================================
 document.addEventListener("DOMContentLoaded", () => {
+  initOpening();
+  initTitleFade();
   initModal();
   initContactForm();
   initParallax();
 });
+
+// ========================================
+// Opening（FV の写真が中央から円形に広がり、そのあと文字がフェードアップ）
+// ========================================
+async function initOpening() {
+  const root = document.documentElement;
+  if (!root.classList.contains("is-opening")) return; // 動きを減らす設定では何もしない
+  window.openingStarted = true; // head の保険（3 秒で解除）を止める
+
+  // 写真を読み込んでから始める（遅い回線でも 1.5 秒で開始）
+  const img = document.querySelector(".p-mv__img");
+  if (img) await Promise.race([img.decode().catch(() => {}), new Promise((r) => setTimeout(r, 1500))]);
+
+  const photo = document.querySelector(".p-mv__image");
+  const texts = document.querySelectorAll(".p-mv__en-line, .p-mv__ja-line, .p-mv__ja-band");
+  const header = document.querySelector(".l-header");
+
+  gsap
+    .timeline({
+      onComplete: () => {
+        // 終わったら準備クラスと GSAP の指定を外し、CSS の通常表示に戻す
+        root.classList.remove("is-opening");
+        gsap.set([photo, ...texts, header], { clearProps: "all" });
+      },
+    })
+    .fromTo(photo, { clipPath: "circle(0% at 50% 50%)" }, { clipPath: "circle(75% at 50% 50%)", duration: 1.2, ease: "power2.inOut" })
+    .fromTo(texts, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.8, ease: "power2.out", stagger: 0.15 }, "-=0.3")
+    .fromTo(header, { opacity: 0 }, { opacity: 1, duration: 0.6, ease: "power1.out" }, "<");
+}
+
+// ========================================
+// Section Title（About / Menu / Shop / Contact の見出しを、画面に入ったらフェードイン）
+// ========================================
+function initTitleFade() {
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+  document.querySelectorAll(".c-section-title").forEach((title) => {
+    gsap.from(title, {
+      opacity: 0,
+      y: 20,
+      duration: 0.8,
+      ease: "power2.out",
+      scrollTrigger: {
+        trigger: title,
+        start: "top 85%", // 見出しの上端が画面の下から 15% の位置に来たら
+        once: true,
+      },
+    });
+  });
+}
 
 // ========================================
 // Modal（プライバシーポリシー）

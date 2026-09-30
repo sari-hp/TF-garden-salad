@@ -58,7 +58,7 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     cssMinify: false, // 納品3原則: CSSは非圧縮（先方コーダーが読める状態）。圧縮は先方指定時のみtrueへ
-    minify: false, // JSも非圧縮（同上）
+    minify: 'esbuild', // ポートフォリオ公開用に JS は圧縮（GSAP 同梱で 280KB → 118KB）。読める形は js/script.js を参照
     assetsInlineLimit: 0, // 小さい画像もdata URIに埋め込まず画像ファイルとして書き出す
     rollupOptions: {
       input: {

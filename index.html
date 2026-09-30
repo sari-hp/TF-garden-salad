@@ -16,6 +16,14 @@
   <link rel="icon" href="./images/common/favicon.ico" sizes="any">
   <link rel="icon" href="./images/common/favicon-32.png" type="image/png">
   <link rel="apple-touch-icon" href="./images/common/apple-touch-icon.png">
+  <script>
+    // オープニングアニメーションの準備。CSS より先にクラスを付け、写真と文字が一瞬見えてしまうのを防ぐ
+    // （動きを減らす設定では付けない。JS が動かなかった場合は 3 秒後に外して通常表示に戻す）
+    if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      document.documentElement.classList.add("is-opening");
+      setTimeout(() => { if (!window.openingStarted) document.documentElement.classList.remove("is-opening"); }, 3000);
+    }
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Satisfy&display=swap" rel="stylesheet">
