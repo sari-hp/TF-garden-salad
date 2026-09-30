@@ -1,0 +1,27 @@
+# 依存パッケージ
+node_modules/
+
+# ビルド成果物
+dist/
+
+# 個人設定・進捗ファイル（git管理外）
+config.local.md
+.coding-plan.md
+
+# デザインデータ抽出物（パターンD/E/F）
+.xd-extract/
+.design-extract/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# エディタ
+.vscode/
+.idea/
+
+# Playwright MCP
+.playwright-mcp/
+
+# スキルの作業データ（検査記録・引き継ぎ。納品・コミットに含めない）
+.skill-work/
