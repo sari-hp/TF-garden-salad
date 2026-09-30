@@ -39,6 +39,18 @@ function autoWebp() {
   };
 }
 
+// HTML から相対パスで参照されないファイル（og:image は絶対URLのため）を dist へ書き出すプラグイン
+function copyStaticFiles(files) {
+  return {
+    name: 'copy-static-files',
+    generateBundle() {
+      files.forEach((file) => {
+        this.emitFile({ type: 'asset', fileName: file, source: fs.readFileSync(path.resolve(__dirname, file)) });
+      });
+    },
+  };
+}
+
 export default defineConfig({
   // ビルド対象のHTMLを指定（マルチページは rollupOptions.input に追記する）
   root: '.',
@@ -91,6 +103,7 @@ export default defineConfig({
   },
   plugins: [
     autoWebp(),
+    copyStaticFiles(['images/ogp.jpg']),
     ViteImageOptimizer({
       /* 画像劣化の方針: 「非可逆圧縮は元画像から1回だけ」。
          - WebPは generate-webp.js が元画像から生成済み → ここで再圧縮すると二重非可逆になるため除外
