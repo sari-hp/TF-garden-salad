@@ -25,3 +25,6 @@ Thumbs.db
 
 # スキルの作業データ（検査記録・引き継ぎ。納品・コミットに含めない）
 .skill-work/
+
+# anime-create の案件設定
+anime.config.local.md

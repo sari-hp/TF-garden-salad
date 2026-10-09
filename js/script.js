@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // ========================================
-// Opening（FV の写真が中央から円形に広がり、広がりきる少し前から文字が一斉にフェードアップ）
+// Opening（FV の写真がぼかしから焦点が合うようにふわっと現れ、続いて文字も湯気のようにふわっと浮かぶ）
 // ========================================
 async function initOpening() {
   const root = document.documentElement;
@@ -22,20 +22,23 @@ async function initOpening() {
   const img = document.querySelector(".p-mv__img");
   if (img) await Promise.race([img.decode().catch(() => {}), new Promise((r) => setTimeout(r, 1500))]);
 
-  const photo = document.querySelector(".p-mv__image");
-  const texts = document.querySelectorAll(".p-mv__en-line, .p-mv__ja-line, .p-mv__ja-band");
+  const photo = document.querySelector(".p-mv__img");
+  const enLines = document.querySelectorAll(".p-mv__en-line");
+  const jaLines = document.querySelectorAll(".p-mv__ja-line, .p-mv__ja-band");
   const header = document.querySelector(".l-header");
+  const textIn = { opacity: 1, filter: "blur(0px)", y: 0, duration: 0.8, ease: "power2.out" };
 
   gsap
     .timeline({
       onComplete: () => {
         // 終わったら準備クラスと GSAP の指定を外し、CSS の通常表示に戻す
         root.classList.remove("is-opening");
-        gsap.set([photo, ...texts, header], { clearProps: "all" });
+        gsap.set([photo, ...enLines, ...jaLines, header], { clearProps: "all" });
       },
     })
-    .fromTo(photo, { clipPath: "circle(0% at 50% 50%)" }, { clipPath: "circle(75% at 50% 50%)", duration: 1.2, ease: "power2.inOut" })
-    .fromTo(texts, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" }, "-=0.3") // 写真が広がりきる 0.3 秒前から、文字を一斉に
+    .fromTo(photo, { opacity: 0, filter: "blur(12px)", scale: 1.06 }, { opacity: 1, filter: "blur(0px)", scale: 1, duration: 1.4, ease: "power1.out" })
+    .fromTo(enLines, { opacity: 0, filter: "blur(6px)", y: 12 }, { ...textIn, stagger: 0.15 }, 0.6) // 写真が出はじめて 0.6 秒後から、英字を 1 行ずつ
+    .fromTo(jaLines, { opacity: 0, filter: "blur(6px)", y: 12 }, textIn, 0.9) // 英字の 0.3 秒後に、日本語と緑帯を一緒に
     .fromTo(header, { opacity: 0 }, { opacity: 1, duration: 0.6, ease: "power1.out" }, "<");
 }
 
