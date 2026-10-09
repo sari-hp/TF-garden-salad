@@ -1,14 +1,10 @@
 import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
 
 // ========================================
 // Initialize
 // ========================================
 document.addEventListener("DOMContentLoaded", () => {
   initOpening();
-  initTitleFade();
   initModal();
   initContactForm();
   initParallax();
@@ -41,27 +37,6 @@ async function initOpening() {
     .fromTo(photo, { clipPath: "circle(0% at 50% 50%)" }, { clipPath: "circle(75% at 50% 50%)", duration: 1.2, ease: "power2.inOut" })
     .fromTo(texts, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.8, ease: "power2.out", stagger: 0.15 }, "-=0.3")
     .fromTo(header, { opacity: 0 }, { opacity: 1, duration: 0.6, ease: "power1.out" }, "<");
-}
-
-// ========================================
-// Section Title（About / Menu / Shop / Contact の見出しを、画面に入ったらフェードイン）
-// ========================================
-function initTitleFade() {
-  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
-  document.querySelectorAll(".c-section-title").forEach((title) => {
-    gsap.from(title, {
-      opacity: 0,
-      y: 20,
-      duration: 0.8,
-      ease: "power2.out",
-      scrollTrigger: {
-        trigger: title,
-        start: "top 85%", // 見出しの上端が画面の下から 15% の位置に来たら
-        once: true,
-      },
-    });
-  });
 }
 
 // ========================================
