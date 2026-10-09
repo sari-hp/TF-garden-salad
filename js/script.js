@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // ========================================
-// Opening（FV の写真が中央から円形に広がり、そのあと文字がフェードアップ）
+// Opening（FV の写真が中央から円形に広がり、広がりきる少し前から文字が一斉にフェードアップ）
 // ========================================
 async function initOpening() {
   const root = document.documentElement;
@@ -35,7 +35,7 @@ async function initOpening() {
       },
     })
     .fromTo(photo, { clipPath: "circle(0% at 50% 50%)" }, { clipPath: "circle(75% at 50% 50%)", duration: 1.2, ease: "power2.inOut" })
-    .fromTo(texts, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.8, ease: "power2.out", stagger: 0.15 }, "-=0.3")
+    .fromTo(texts, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" }, "-=0.3") // 写真が広がりきる 0.3 秒前から、文字を一斉に
     .fromTo(header, { opacity: 0 }, { opacity: 1, duration: 0.6, ease: "power1.out" }, "<");
 }
 
