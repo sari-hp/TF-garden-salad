@@ -1575,7 +1575,7 @@ a[href^="tel:"] {
   @include mq-up(md) {
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
+    align-items: center; // PC 写真 500 に対し本文 349 が上下中央（上 75 / 下 76）。中間幅で本文の方が高くなっても写真が上に寄らない
     margin-top: 80px; // PC 地図下端 6742 → 外観写真 6822
     padding-left: calc(180 / 1440 * 100%); // PC 本文左 180
   }
@@ -1586,7 +1586,6 @@ a[href^="tel:"] {
   @include mq-up(md) {
     flex: 1 1 auto;
     min-width: 0; // 中間幅で写真が画面外へ押し出されないよう縮める
-    margin-top: 75px; // PC 写真上端 6822 → 店名 6897
     margin-right: 24px;
     padding-inline: 0;
   }
